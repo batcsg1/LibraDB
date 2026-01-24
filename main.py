@@ -65,8 +65,16 @@ class Collection:
                 
         # Define the matching logic inside a helper function
         def matches(item):
+            # Check each key-value pair in the query
+
             for k, v in query.items():
-                val = item.get(k)
+
+                #{"age": {"$gt": 25}} Query example
+                #dict_items([( k: 'age', v: {'$gt': 25})])
+
+                # Get the value from the item from the collection
+                val = item.get(k) #E.g. val = {"$gt": 25}} or 25
+
                 if isinstance(v, dict):
                     # Logical check for operators
                     if "$gt" in v and not (val > v["$gt"]): return False
@@ -141,8 +149,5 @@ users = db.collection("users")
 # users.insert({"name": "Bob", "age": 25})
 # users.insert({"name": "Diana", "age": 28})
 # users.insert({"name": "Eve", "age": 22})
-#users.update({"name": "James"}, {"age": 31})
-
-
-users.delete({"name": "Diana"})
-print(users.find())
+users.update({"name": "Eve"}, {"age": 31})
+print(users.find({"age": {"$gt": 25}}))
