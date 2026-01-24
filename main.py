@@ -111,29 +111,26 @@ class Collection:
     def delete(self, query):
         print(f"Deleting data from collection '{self.name}' with query: {query}")
 
-        if not query:
-            print("No query provided. Nothing deleted.")
+        # Find matching documents
+        data = self.find(query)
+
+        # If no documents match the query
+        if not data:
+            print("No documents matched the query. Nothing updated.")
             return 0
-        
-        # 1. Get ALL current data in this collection
-        data = self.engine.data.get(self.name, [])
-        initial_count = len(data)
 
-        # 2. Use filter() to keep items that do NOT match the query
-        # We wrap it in list() because filter returns an iterator
-        self.engine.data[self.name] = list(filter(
-            lambda item: not all(item.get(k) == v for k, v in query.items()), 
-            data
-        ))
+        # 2. Get the full list from the engine
+        raw_collection = self.engine.data[self.name]
 
-        # 3. Calculate and Save
-        deleted_count = initial_count - len(self.engine.data[self.name])
-        
-        if deleted_count > 0:
-            self.engine._save()
-            print(f"Successfully deleted {deleted_count} document(s).")
-        
-        return deleted_count
+        # 3. Remove each target from the main list
+        for item in data:
+            raw_collection.remove(item)
+
+        # 4. Save the changes to the TOON file
+        self.engine._save()
+
+        print(f"Deleted {len(data)} documents.")
+        return len(data)
 
         
 # Initialize the database
@@ -144,10 +141,10 @@ db = LibraQL("my_database.toon")
 # #Example usage:
 
 users = db.collection("users")
-# users.insert({"name": "Charlie", "age": 35})
 # users.insert({"name": "Alice", "age": 30})
 # users.insert({"name": "Bob", "age": 25})
 # users.insert({"name": "Diana", "age": 28})
-# users.insert({"name": "Eve", "age": 22})
-users.update({"name": "Eve"}, {"age": 31})
-print(users.find({"age": {"$gt": 25}}))
+
+
+users.delete({"name": "Charlie"})
+print(users.find())
