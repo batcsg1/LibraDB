@@ -63,28 +63,22 @@ class Collection:
             #return encode(data)
             return data
                 
-        # Filter based on query
-        results = []
-        for item in data:
-            match = True
+        # Define the matching logic inside a helper function
+        def matches(item):
             for k, v in query.items():
                 val = item.get(k)
-                
-                # Check if we are using a comparison operator (dict) or exact match
                 if isinstance(v, dict):
-                    if "$gt" in v and not (val > v["$gt"]): match = False
-                    if "$lt" in v and not (val < v["$lt"]): match = False
-                    if "$gte" in v and not (val >= v["$gte"]): match = False
-                    if "$lte" in v and not (val <= v["$lte"]): match = False
-                else:
-                    # Default to exact equality
-                    if val != v: match = False
-                
-                if not match: break
-            
-            if match:
-                results.append(item)
-        return results
+                    # Logical check for operators
+                    if "$gt" in v and not (val > v["$gt"]): return False
+                    if "$lt" in v and not (val < v["$lt"]): return False
+                    if "$gte" in v and not (val >= v["$gte"]): return False
+                    if "$lte" in v and not (val <= v["$lte"]): return False
+                elif val != v:
+                    return False
+            return True
+
+        # Use filter to create an iterator, then cast to list
+        return list(filter(matches, data))
 
     def update(self, query, new_data):
         print(f"Updating data in collection '{self.name}' with query: {query} and new data: {new_data}")
@@ -113,32 +107,24 @@ class Collection:
             print("No query provided. Nothing deleted.")
             return 0
         
-        data = self.find(query)
+        # 1. Get ALL current data in this collection
+        data = self.engine.data.get(self.name, [])
+        initial_count = len(data)
 
-        if not data:
-            print("No documents matched the query. Nothing deleted.")
-            return 0
-        
-        # Add items that do not match the query back to the collection
-        initial_count = len(self.engine.data[self.name])
+        # 2. Use filter() to keep items that do NOT match the query
+        # We wrap it in list() because filter returns an iterator
+        self.engine.data[self.name] = list(filter(
+            lambda item: not all(item.get(k) == v for k, v in query.items()), 
+            data
+        ))
 
-        # Find items that do not match the query
-        new_data = [
-            item for item in data 
-            if not all(item.get(k) == v for k, v in query.items())
-        ]
-
-        self.engine.data[self.name] = new_data
-
-        # Calculate how many records were removed
+        # 3. Calculate and Save
         deleted_count = initial_count - len(self.engine.data[self.name])
-
+        
         if deleted_count > 0:
             self.engine._save()
             print(f"Successfully deleted {deleted_count} document(s).")
-        else:
-            print("No documents matched the query. Nothing deleted.")
-
+        
         return deleted_count
 
         
@@ -150,7 +136,13 @@ db = LibraQL("my_database.toon")
 # #Example usage:
 
 users = db.collection("users")
+# users.insert({"name": "Charlie", "age": 35})
 # users.insert({"name": "Alice", "age": 30})
 # users.insert({"name": "Bob", "age": 25})
+# users.insert({"name": "Diana", "age": 28})
+# users.insert({"name": "Eve", "age": 22})
 #users.update({"name": "James"}, {"age": 31})
-print(users.find({"age": {"$gt": 30}}))
+
+
+users.delete({"name": "Diana"})
+print(users.find())
