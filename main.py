@@ -49,8 +49,23 @@ class Collection:
         self.engine.data[self.name].append(data)
         self.engine._save()
 
-    def find(self):
-        return self.engine.data.get(self.name, [])
+    def find(self, query=None):
+        data = self.engine.data.get(self.name, [])
+
+        # If no query is provided, return all records
+        if not query:
+            return data
+        
+        # Filter based on query
+        results = []
+        for item in data:
+            # Check if all query conditions match
+            match = all(item.get(k) == v for k, v in query.items())
+            if match:
+                results.append(item)
+        return results
+
+# Initialize the database   
 
 
 db = LibraQL("my_database.toon")
