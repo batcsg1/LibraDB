@@ -60,13 +60,28 @@ class Collection:
         # If no query is provided, return all records
         if not query:
             print("No query provided, returning all records.")
+            #return encode(data)
             return data
                 
         # Filter based on query
         results = []
         for item in data:
-            # Check if all query conditions match
-            match = all(item.get(k) == v for k, v in query.items())
+            match = True
+            for k, v in query.items():
+                val = item.get(k)
+                
+                # Check if we are using a comparison operator (dict) or exact match
+                if isinstance(v, dict):
+                    if "$gt" in v and not (val > v["$gt"]): match = False
+                    if "$lt" in v and not (val < v["$lt"]): match = False
+                    if "$gte" in v and not (val >= v["$gte"]): match = False
+                    if "$lte" in v and not (val <= v["$lte"]): match = False
+                else:
+                    # Default to exact equality
+                    if val != v: match = False
+                
+                if not match: break
+            
             if match:
                 results.append(item)
         return results
@@ -90,7 +105,43 @@ class Collection:
 
         print(f"Updated {len(data)} documents.")
         return len(data)
+    
+    def delete(self, query):
+        print(f"Deleting data from collection '{self.name}' with query: {query}")
 
+        if not query:
+            print("No query provided. Nothing deleted.")
+            return 0
+        
+        data = self.find(query)
+
+        if not data:
+            print("No documents matched the query. Nothing deleted.")
+            return 0
+        
+        # Add items that do not match the query back to the collection
+        initial_count = len(self.engine.data[self.name])
+
+        # Find items that do not match the query
+        new_data = [
+            item for item in data 
+            if not all(item.get(k) == v for k, v in query.items())
+        ]
+
+        self.engine.data[self.name] = new_data
+
+        # Calculate how many records were removed
+        deleted_count = initial_count - len(self.engine.data[self.name])
+
+        if deleted_count > 0:
+            self.engine._save()
+            print(f"Successfully deleted {deleted_count} document(s).")
+        else:
+            print("No documents matched the query. Nothing deleted.")
+
+        return deleted_count
+
+        
 # Initialize the database
 
 
@@ -101,6 +152,5 @@ db = LibraQL("my_database.toon")
 users = db.collection("users")
 # users.insert({"name": "Alice", "age": 30})
 # users.insert({"name": "Bob", "age": 25})
-
-users.update({"name": "Bob"}, {"age": 31})
-print(users.find({"age": 31}))
+#users.update({"name": "James"}, {"age": 31})
+print(users.find({"age": {"$gt": 30}}))
