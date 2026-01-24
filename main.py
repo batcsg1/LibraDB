@@ -55,8 +55,9 @@ class Collection:
 
 db = LibraQL("my_database.toon")
 
-users = db.collection("users")
+# Example usage:
+
+# users = db.collection("users")
 # users.insert({"name": "Alice", "age": 30})
 # users.insert({"name": "Bob", "age": 25})
-
-# print(users.find_all())
+# print(users.find())
