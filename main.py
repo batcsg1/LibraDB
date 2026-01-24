@@ -18,6 +18,7 @@ class LibraQL:
         with open(self.db_name, 'r') as f:
             try:
                 encoded_data = f.read()
+                # Try and convert TOON data to Python dictionary
                 decoded_data = decode(encoded_data)
                 return decoded_data if decoded_data else {}
             except Exception as e:
@@ -28,6 +29,7 @@ class LibraQL:
     def _save(self):
         with open(self.db_name, 'w') as f:
             try:
+                # Write Python dictionary as TOON encoded data
                 encoded_data = encode(self.data)
                 f.write(encoded_data)
             except Exception as e:
@@ -35,6 +37,7 @@ class LibraQL:
             
     def collection(self, name):
         if name not in self.data:
+            # Add a list for the new collection to the master dictionary (self.data)
             self.data[name] = []
         return Collection(self, name)
     
