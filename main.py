@@ -116,7 +116,7 @@ class Collection:
 
         # If no documents match the query
         if not data:
-            print("No documents matched the query. Nothing updated.")
+            print("No documents matched the query. Nothing deleted.")
             return 0
 
         # 2. Get the full list from the engine
@@ -146,5 +146,5 @@ users = db.collection("users")
 # users.insert({"name": "Diana", "age": 28})
 
 
-users.delete({"name": "Charlie"})
+users.delete({"name": "Carmen"})
 print(users.find())
