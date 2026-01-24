@@ -16,12 +16,16 @@ class Engine:
                 f.write("")
             return {}
         with open(self.db_name, 'r') as f:
-            encoded_data = f.read()
-        decoded_data = decode(encoded_data)
-        return decoded_data if decoded_data else {}
-    
+            try:
+                encoded_data = f.read()
+                decoded_data = decode(encoded_data)
+                return decoded_data if decoded_data else {}
+            except Exception as e:
+                print(f"Error reading database file: {e}")
+                return {}
+              
     # saves the current state of the database to the TOON file
-    def _commit(self):
+    def _save(self):
         with open(self.db_name, 'w') as f:
             encoded_data = encode(self.data)
             f.write(encoded_data)
