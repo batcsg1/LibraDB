@@ -56,6 +56,7 @@ class Collection:
 
         # If no query is provided, return all records
         if not query:
+            print("No query provided, returning all records.")
             return data
                 
         # Filter based on query
@@ -67,14 +68,36 @@ class Collection:
                 results.append(item)
         return results
 
-# Initialize the database   
+    def update(self, query, new_data):
+        print(f"Updating data in collection '{self.name}' with query: {query} and new data: {new_data}")
+
+        # Find matching documents
+        data = self.find(query)
+
+        # If no documents match the query
+        if not data:
+            print("No documents matched the query. Nothing updated.")
+            return 0
+
+        # Update the matching documents
+        for item in data:
+            item.update(new_data)
+
+        self.engine._save()
+
+        print(f"Updated {len(data)} documents.")
+        return len(data)
+
+# Initialize the database
 
 
 db = LibraQL("my_database.toon")
 
 # #Example usage:
 
-# users = db.collection("users")
+users = db.collection("users")
 # users.insert({"name": "Alice", "age": 30})
 # users.insert({"name": "Bob", "age": 25})
-# print(users.find({"age": 25}))
+
+users.update({"name": "Bob"}, {"age": 31})
+print(users.find({"age": 31}))
