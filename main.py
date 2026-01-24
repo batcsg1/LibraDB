@@ -43,6 +43,7 @@ class Collection:
     def __init__(self, engine, name):
         self.engine = engine
         self.name = name
+        print(f"Collection '{self.name}' initialized.")
 
     def insert(self, data):
         self.engine.data[self.name].append(data)
@@ -54,7 +55,7 @@ class Collection:
 
 db = LibraQL("my_database.toon")
 
-# users = db.collection("users")
+users = db.collection("users")
 # users.insert({"name": "Alice", "age": 30})
 # users.insert({"name": "Bob", "age": 25})
 
