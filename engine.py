@@ -1,8 +1,7 @@
 import os
 from toon import encode, decode
 
-# the main database engine which reads and writes to a TOON file
-
+# the main database engine which reads and writes to a TOON file (Data persistence layer)
 class LibraQL:
     def __init__(self, db_name="db.toon"):
         self.db_name = db_name
@@ -41,7 +40,7 @@ class LibraQL:
             self.data[name] = []
         return Collection(self, name)
     
-
+# Collection class to handle operations on a specific collection (Data access layer)
 class Collection:
     def __init__(self, engine, name):
         self.engine = engine
