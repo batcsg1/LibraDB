@@ -5,5 +5,8 @@
 __pycache__/
 *.pyc
 
+# Log folder
+logs/
+
 # Toon files
 *.toon
