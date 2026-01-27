@@ -130,20 +130,3 @@ class Collection:
 
         print(f"Deleted {len(data)} documents.")
         return len(data)
-
-        
-# Initialize the database
-
-
-db = LibraQL("my_database.toon")
-
-# #Example usage:
-
-users = db.collection("users")
-# users.insert({"name": "Alice", "age": 30})
-# users.insert({"name": "Bob", "age": 25})
-# users.insert({"name": "Diana", "age": 28})
-
-
-users.delete({"name": "Carmen"})
-print(users.find())
