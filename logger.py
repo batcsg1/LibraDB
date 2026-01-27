@@ -5,14 +5,16 @@ class Colors:
     def __init__(self):
         self.error = '\033[31m'
         self.success = '\033[32m'
+        self.warning = '\033[93m'
         self.reset = '\033[0m'
+        self.info = '\u001b[1;34m'
 
 class Logger:
     def __init__(self, logFile = './logs/log' ):
         self.logFile = logFile
         self.colors = Colors()
     
-    def _log(self, color, message):       
+    def _log(self, message, color="\033[97m"):       
         message == print(f"{color}{message}{self.colors.reset}")
         self._write(message)
     
