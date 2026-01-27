@@ -9,7 +9,8 @@ colors = Colors()
 class LibraQL:
     # Name and load the database file
     def __init__(self, db_name="db.toon"):
-        logger._log(colors.success, f"Intializing database with filename: {db_name}")
+        logger._log(f"Intializing database with filename: {db_name}", colors.info)
+
         self.db_name = db_name
         self.data = self._load()
     
@@ -17,7 +18,8 @@ class LibraQL:
     def _load(self):
         # If the file doesn't exist, create an empty file
         if not os.path.exists(self.db_name):
-            print(f"Database file {self.db_name} not found. Creating a new one.")
+            logger._log(f"Database file {self.db_name} not found. Creating a new one.", colors.warning)
+
             with open(self.db_name, 'w') as f:
                 f.write("")
             return {}
@@ -35,7 +37,7 @@ class LibraQL:
                 return decoded_data if decoded_data else {}
             except Exception as e:
                 # If there is a problem reading the TOON file, e.g. if the file is empty.
-                print(f"Error reading database file: {e}")
+                logger._log(f"Error reading database file: {e}", colors.error)
                 return {}
               
     # Saves the current state of the database to the database file
@@ -48,7 +50,7 @@ class LibraQL:
                 f.write(encoded_data)
             except Exception as e:
                 # If there is a problem reading the TOON file, e.g. if the file is empty.
-                print(f"Error writing to database file: {e}")
+                logger._log(f"Error writing to database file: {e}", colors.error)
             
     # Creating a data collection
     def collection(self, name):
@@ -65,11 +67,11 @@ class Collection:
     def __init__(self, engine, name):
         self.engine = engine
         self.name = name
-        print(f"Collection '{self.name}' initialized.")
+        logger._log(f"Collection '{self.name}' initialized.", colors.success)
 
     # Insert into the collection
     def insert(self, data):
-        print(f"Inserting data into collection '{self.name}': {data}")
+        logger._log(f"INSERT: Inserting data into collection '{self.name}': {data}", colors.info)
 
         # Add to the collection list
         self.engine.data[self.name].append(data)
@@ -79,14 +81,14 @@ class Collection:
 
     # Select from the collection
     def find(self, query=None):
-        print(f"Finding data in collection '{self.name}'")
+        logger._log(f"FIND: Finding data in collection '{self.name}'", colors.info)
 
         # Get the data from the collection list, return an empty list if there is no data, hence the '[]'
         data = self.engine.data.get(self.name, [])
 
         # If no query is provided, return all records
         if not query:
-            print("No query provided, returning all records.")
+            logger._log("No query provided, returning all records.")
             #return encode(data)
             return data
                 
@@ -119,14 +121,14 @@ class Collection:
 
     # Update the collection
     def update(self, query, new_data):
-        print(f"Updating data in collection '{self.name}' with query: {query} and new data: {new_data}")
+        logger._log(f"UPDATE: Updating data in collection '{self.name}' with query: {query} and new data: {new_data}", colors.info)
 
         # Find matching documents
         data = self.find(query)
 
         # If no documents match the query
         if not data:
-            print("No documents matched the query. Nothing updated.")
+            logger._log("No documents matched the query. Nothing updated.")
             return 0
 
         # Update the matching documents
@@ -136,19 +138,19 @@ class Collection:
         # Write the updated collection to the database file
         self.engine._save()
 
-        print(f"Updated {len(data)} documents.")
+        logger._log(f"Updated {len(data)} documents.", colors.success)
         return len(data)
     
     # Delete from the collection
     def delete(self, query):
-        print(f"Deleting data from collection '{self.name}' with query: {query}")
+        logger._log(f"DELETE: Deleting data from collection '{self.name}' with query: {query}", colors.info)
 
         # Find matching documents
         data = self.find(query)
 
         # If no documents match the query
         if not data:
-            print("No documents matched the query. Nothing deleted.")
+            logger._log("No documents matched the query. Nothing deleted.")
             return 0
 
         # 2. Get the full list from the engine
@@ -161,5 +163,5 @@ class Collection:
         # 4. Save the changes to the database file
         self.engine._save()
 
-        print(f"Deleted {len(data)} documents.")
+        logger._log(f"Deleted {len(data)} documents.", colors.success)
         return len(data)
