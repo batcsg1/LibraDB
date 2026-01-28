@@ -9,7 +9,7 @@
 
 # About the Project
 
-LibraQL is all about making the functionalities from interacting with a database easier like never before. It serves as a lightweight database management system, that is totally serverless, and is designed to make your life a whole lot easier, when it comes to data management anyways.
+LibraQL is all about making the functionalities of interacting with a database easier like never before. It serves as a lightweight database management system, that is totally serverless, and is designed to make your life a whole lot easier, well when it comes to data management anyways.
 
 ## Database Storage:
 ### Bye Bye JSON...
