@@ -16,7 +16,7 @@ There are many No-SQL DBMS's out there, in particular document DBMS's such as **
 The problem with **JSON** however, is that is not a particularly token efficent format, in laymans term's meaning there are many redundant characters such as brackets `[]`, braces `{}`, quotes: `""` and commas `,`. This inflated amount o tokens can get very hard to read for tools like DBMS's to process, particularly when reading through large datasets.
 
 ### Hello TOON...
-However LibraQL utilizes a new revolutionary format called **TOON** _(Token-Oriented Object Notation)_ for its database storage. 
+However **LibraQL** utilizes a new revolutionary data format called **TOON** _(Token-Oriented Object Notation)_ for its database storage. 
 
 ### Visuals of why TOON is better
 **JSON** vs **TOON** objects containing 2 users:
@@ -42,12 +42,24 @@ users: id,name,role
 1,Alice,admin
 2,Bob,user   
 ```
-As you can see, TOON takes up way less lines compared to an equivalent JSON object with equivalent data. Anyways,enough about my rant about TOON, here is some more stuff about TOON linked down below:
+As you can see, TOON takes up way less lines compared to an equivalent JSON object with equivalent data. Anyways, enough about my rant about TOON, here is some more stuff about TOON linked down below:
 
 
 [More about TOON and it's usage for LLM's](https://medium.com/@jenilsojitra/the-complete-beginners-guide-to-toon-format-token-oriented-object-notation-957e8cf14590)
 
 ## Data Access
+
+The query language for **LibraQL**, is heavily inspired by the query language used in the popular No-SQL DBMS, [MongoDB](https://www.mongodb.com/docs/manual/tutorial/query-documents/). Just like MongoDB's query language, LibraQL utilizies the creation of databases as objects, the creation of collections as well as using functions for **_creating, finding, modifying and deleteing_** data collections.
+
+### Basic data access functionalities in LibraQL vs SQL
+| Function | LibraQL | SQL _(MariaDB_) |
+|----------|---------|-----|
+| Creating a database | `db = LibraQL("my_awesome_database.toon")` | `CREATE DATABASE my_awesome_database;`  |
+| Creating a collection/table | `users = db.collection("users")` | `USE DATABASE my_awesome_database; CREATE TABLE users ( name VARCHAR(100) NOT NULL, age INT NOT NULL);`|
+| Creating data | `users.insert({ "name": "Brent", "age": 21 })` | `INSERT INTO users VALUES ("Brent", 21); ` |
+| Finding data | `users.find()` | `SELECT * FROM users;` |
+| Updating data | `users.update({"name": "Brent"}, {"age": 34})` | `UPDATE users SET age = 34 WHERE name = 'Brent'; ` |
+| Deleting data | `users.delete({"name" "Brent"})` | `DELETE FROM users WHERE name = "Brent";` |
 
 
 
