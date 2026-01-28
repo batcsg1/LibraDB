@@ -12,6 +12,10 @@
 - [Database Storage](#database-storage)
 - [Data Access](#data-access)
 - [Manual](#manual)
+  - [Git](#git)
+  - [Coding text editor](#coding-text-editor)
+  - [Setting up Python](#setting-up-python)
+  - [Virtual Environment](#virtual-environment)
 
 ---
 # About the Project
@@ -72,7 +76,7 @@ The query language for **LibraQL**, is heavily inspired by the query language us
 
 ## Manual
 
-### Git and Git Bash
+### Git
 To get started with this project and or/contributing to it, you will use [**Git**](https://git-scm.com/)
 and a terminal of your choosing. 
 
