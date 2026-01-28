@@ -49,7 +49,7 @@ As you can see, TOON takes up way less lines compared to an equivalent JSON obje
 
 ## Data Access
 
-The query language for **LibraQL**, is heavily inspired by the query language used in the popular No-SQL DBMS, [MongoDB](https://www.mongodb.com/docs/manual/tutorial/query-documents/). Just like MongoDB's query language, LibraQL utilizies the creation of databases as objects, the creation of collections as well as using functions for **_creating, finding, modifying and deleteing_** data collections.
+The query language for **LibraQL**, is heavily inspired by the query language used in the popular No-SQL DBMS, [MongoDB](https://www.mongodb.com/docs/manual/tutorial/query-documents/). Just like MongoDB's query language, LibraQL utilizies the creation of databases as objects, the creation of collections as well as using functions for **_creating, finding, modifying and deleting_** items in data collections.
 
 ### Basic data access functionalities in LibraQL vs SQL
 | Function | LibraQL | SQL _(MariaDB_) |
