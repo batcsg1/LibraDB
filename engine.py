@@ -128,7 +128,7 @@ class Collection:
                 reverse = True if direction == -1 else False
                 data.sort(key=lambda x: x.get(key, None), reverse=reverse)
 
-        return encode(data)
+        return data
 
     # Update the collection
     def update(self, query, new_data):
