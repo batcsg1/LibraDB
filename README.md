@@ -2,11 +2,6 @@
   <img height="180" alt="image" src="./assets/logo.png" />
 </div>
 
-# Disclaimer
-
-- ⚠️ The project is under very active development.
-- ⚠️ Expect bugs and breaking changes.
-
 ## Contents
 - [About the Project](#about-the-project)
 - [Database Storage](#database-storage)
@@ -18,6 +13,12 @@
   - [Virtual Environment](#virtual-environment)
 
 ---
+
+## Disclaimer
+
+- ⚠️ The project is under very active development.
+- ⚠️ Expect bugs and breaking changes.
+
 # About the Project
 
 **LibraQL** is all about making the functionalities of interacting with a database easier like never before. It serves as a lightweight database management system, that is totally serverless, and is designed to make your life a whole lot easier, well when it comes to data management anyways.
@@ -60,6 +61,8 @@ As you can see, TOON takes up way less lines compared to an equivalent JSON obje
 
 [More about TOON and it's usage for LLM's](https://medium.com/@jenilsojitra/the-complete-beginners-guide-to-toon-format-token-oriented-object-notation-957e8cf14590)
 
+---
+
 ## Data Access
 
 The query language for **LibraQL**, is heavily inspired by the query language used in the popular No-SQL DBMS, [MongoDB](https://www.mongodb.com/docs/manual/tutorial/query-documents/). Just like MongoDB's query language, LibraQL utilizies the creation of databases as objects, the creation of collections as well as using functions for **_creating, finding, modifying and deleting_** items in data collections.
@@ -73,6 +76,8 @@ The query language for **LibraQL**, is heavily inspired by the query language us
 | Finding data | `users.find()` | `SELECT * FROM users;` |
 | Updating data | `users.update({"name": "Brent"}, {"age": 34})` | `UPDATE users SET age = 34 WHERE name = 'Brent'; ` |
 | Deleting data | `users.delete({"name" "Brent"})` | `DELETE FROM users WHERE name = "Brent";` |
+
+---
 
 ## Manual
 
