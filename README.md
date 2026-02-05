@@ -189,6 +189,42 @@ pip install -r requirements.txt
 ```
 This will install the dependencies as specified in the `requirements.txt` file on the root of this repo.
 
+## Getting started
+
+Once you have everything setup, you can go ahead and start interacting with the vast functionalities of LibraDB.
+
+### Initializing database
+
+In the `app.py` script you will see at the root of this repo, you will see these two lines at the top of the file:
+
+```py
+# Import database engine
+from engine import LibraDB
+
+# Initialize the database
+db = LibraDB("my_database.toon")
+```
+
+The first line imports the **database engine**, which is responsible for the management of **database storage**, as well as the **retrieving** and **modifying** database data.
+
+The second line initializes a new database instance of the LibraDB engine, and specifies the file for the database to be stored.
+
+### Collection
+
+```py
+# Initialize a collection
+users = db.collection("users")
+```
+The third line creates a collection in LibraDB, which is simply a collection of data with a particular name. The collection is attached to the database instance declared earlier.
+
+#### Inserting data
+```py
+newUser = users.insert({ "name": "Brent", "age": 21 })
+```
+When inserting data, you can use LibraDB's built-in `insert` function, with parameters specifying the data object you want to insert.
+
+
+
 
 
 
