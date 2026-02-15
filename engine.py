@@ -80,7 +80,15 @@ class Collection:
         self.engine._save()
 
     # Select from the collection
-    def find(self, query=None, select=None, sort=None):
+    def find(self, options=None):
+
+        options = options or {}
+
+        query = options.get("query")
+        select = options.get("select")
+        sort = options.get("sort")
+
+
         logger._log(f"FIND: Finding data in collection '{self.name}'", colors.info)
 
         # Get the data from the collection list, return an empty list if there is no data, hence the '[]'

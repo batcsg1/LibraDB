@@ -1,3 +1,4 @@
+# Import database engine
 from engine import LibraDB
 
 # Initialize the database
@@ -6,8 +7,11 @@ db = LibraDB("my_database.toon")
 # Initialize a collection
 users = db.collection("users")
 
+# Insert a user
+# newUser = users.insert({ "name": "Brent", "age": 21 })
+
 # Find all users
-allUsers = users.find()
+allUsers = users.find({ "query": {"age": {"$gte": 30}}})
 
 # Find specific users
 
@@ -17,7 +21,5 @@ allUsers = users.find()
 
 # Show a specific amount of fields of the user object
 
-# Insert a user
-# newUser = users.insert({ "name": "Brent", "age": 21 })
 
 print(allUsers)
