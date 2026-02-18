@@ -11,11 +11,19 @@ args = interface.get_args()
 # Initialize database
 db = LibraDB(f"{args.db}.toon")
 
-# Initialize the database
-#db = LibraDB("my_database.toon")
+# Create an empty data collection
+collection = None
 
 # Initialize a collection
-#users = db.collection("users")
+if args.collection:
+    collection = db.collection(f"{args.collection}")
+
+# If a collection exists and data is findable
+if collection:
+    # Return all data (--find)
+    if args.find == "all":
+        data = collection.find()
+        print(data)
 
 # Insert a user
 # newUser = users.insert({ "name": "Brent", "age": 21 })
