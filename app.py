@@ -21,7 +21,7 @@ if args.collection:
 # If a collection exists and data is findable
 if collection:
     # Return all data (--find)
-    if args.find == "all":
+    if args.find:
         data = collection.find()
         print(data)
 
