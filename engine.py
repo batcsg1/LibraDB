@@ -88,6 +88,7 @@ class Collection:
     # Select from the collection
     def find(self, options=None):
 
+        # If no options are provided, set options to an empty dictionary else return the provided options
         options = options or {}
 
         # Extract query, select, and sort options from the input
