@@ -16,8 +16,10 @@ class LibraDB:
     
     # Load the database into a TOON file or create the TOON file
     def _load(self):
-        # If the file doesn't exist, create an empty file
-        if not os.path.exists(self.db_name):
+        # Check if the database file exists, if it does, load the database, otherwise create a new database file
+        if os.path.exists(self.db_name):
+            logger._log(f"Database file {self.db_name} found. Loading database.", colors.success)
+        else:
             logger._log(f"Database file {self.db_name} not found. Creating a new one.", colors.warning)
 
             with open(self.db_name, 'w') as f:
