@@ -56,8 +56,13 @@ class LibraDB:
             
     # Creating a data collection
     def collection(self, name):
-        # If there is no data collection
-        if name not in self.data:
+        # Let user know that a collection is being initialized
+        logger._log(f"Initializing collection: '{name}'.", colors.info)
+
+        # If there is no data collection warn the user
+        if name in self.data:
+            logger._log(f"Collection '{name}' already exists. Returning existing collection.", colors.warning)
+        else:
             # Add a list for the new collection to the 'master' data dictionary (self.data)
             self.data[name] = []
         # Return the new data collection
@@ -69,7 +74,6 @@ class Collection:
     def __init__(self, engine, name):
         self.engine = engine
         self.name = name
-        logger._log(f"Collection '{self.name}' initialized.", colors.success)
 
     # Insert into the collection
     def insert(self, data):
@@ -86,6 +90,7 @@ class Collection:
 
         options = options or {}
 
+        # Extract query, select, and sort options from the input
         query = options.get("query")
         select = options.get("select")
         sort = options.get("sort")
@@ -96,7 +101,7 @@ class Collection:
         # Get the data from the collection list, return an empty list if there is no data, hence the '[]'
         data = self.engine.data.get(self.name, [])
 
-        # Query the data
+        ## QUERY functionality - filtering the data based on specified criteria
         if query:              
             # Find items that match what is specified in the query
             def matches(item):
@@ -126,12 +131,14 @@ class Collection:
             # If no query is provided, return all records
             logger._log("No query provided, using all records.")
 
+        ## SELECT functionality - selecting specific fields to show
         # If certain fields are selected, filter the data to only include those fields
         if select and isinstance(select, dict):
             data = [
                 {k: v for k, v in item.items() if select.get(k, False)} for item in data
             ]
 
+        ## SORT functionality - sort the data in ascending or descending based on a specified field
         # If sorting is specified, sort the data accordingly
         if sort and isinstance(sort, dict):
             for key, direction in sort.items():
